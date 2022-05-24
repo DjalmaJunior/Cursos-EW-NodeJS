@@ -1,19 +1,8 @@
-const EventEmitter = require('events')
+const Emissor = require('./Emissor');
 
-class Emissor extends EventEmitter {
+const evento = Emissor.eventos.click
 
-}
-
-const emissor = new Emissor()
-
-const evento = 'usuario:click'
-
-emissor.on(evento, (click) => {
-  console.log('Um usuário clicou', click)
-})
-
-// emissor.emit(evento, 'na barra de rolagem')
-// emissor.emit(evento, 'no ok')
+const emissor = Emissor.client
 
 // let count = 0
 // setInterval(() => {
@@ -23,5 +12,5 @@ emissor.on(evento, (click) => {
 const stdin = process.openStdin()
 
 stdin.addListener('data', (value) => {
-  console.log(`Você digitou: ${value.toString().trim()}`)
+  emissor.emit(evento, value.toString().trim())
 })
