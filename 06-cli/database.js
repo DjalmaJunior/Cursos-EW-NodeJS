@@ -35,7 +35,7 @@ class Database {
 
   listar(id = null, nome = null) {
     const dados = this.obterDadosArquivo()
-    const dadosFiltrados = dados.filter(item => (id ? item.id === id : nome ? item.nome.toLowerCase() === nome.toLowerCase() : true))
+    const dadosFiltrados = dados.filter(item => (id ? item.id === Number(id) : nome ? item.nome.toLowerCase() === nome.toLowerCase() : true))
     
     return dadosFiltrados
   }
@@ -48,12 +48,33 @@ class Database {
 
     const dados = this.obterDadosArquivo()
 
-    const indexToDelete = dados.findIndex(item => item.id == id)
+    const indexToDelete = dados.findIndex(item => item.id === Number(id))
 
-    if (!~indexToDelete) throw new Error('Usuário não encontrado!')
+    if (!~indexToDelete) throw new Error('Herói não encontrado!')
 
     dados.splice(indexToDelete, 1)
     return this.escreverArquivo(dados)
+  }
+
+  atualizar(id, dadosAtualizar) {
+    if (!id) throw new Error('Necessário informar um id para atualizar!')
+    if (!dadosAtualizar) throw new Error('Sem dados para atualizar!')
+
+    const dados = this.obterDadosArquivo()
+
+    const indexToUpdate = dados.findIndex(item => item.id === Number(id))
+
+    if (!~indexToUpdate) throw new Error('Herói não encontrado!')
+
+    const novosDados = dados.map((dado, index) => {
+      if (index === indexToUpdate) {
+        dado = { ...dado, ...dadosAtualizar }
+      }
+
+      return dado
+    })
+
+    return this.escreverArquivo(novosDados)
   }
 }
 

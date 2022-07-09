@@ -28,12 +28,27 @@ describe('Suite de manipulação de Herois', () => {
   it('deve cadastrar um heroi no arquivo', () => {
     const { id: olId, ...others } = DEFAULT_ITEM_CADASTRAR
     
-    const dadosCadastro = {...others, nome: 'Batman' + Date.now()}
+    const dadosCadastro = {...others, poder: 'Dinheiro', nome: 'Batman' + Date.now()}
     
     const idGerado = database.cadastrar(dadosCadastro)
     const [{ id: idAct, ...actual}] = database.listar(idGerado)
 
     deepEqual(actual, dadosCadastro)
+  })
+  it('deve atualizar um heroi usando o id', () => {
+    const dadosAtualizar = {
+      nome: 'Superman',
+      poder: 'Voo'
+    }
+    const expected = {
+      ...DEFAULT_ITEM_CADASTRAR,
+      ...dadosAtualizar
+    }
+    
+    database.atualizar(expected.id, dadosAtualizar)
+    const [resultado] = database.listar(expected.id)
+
+    deepEqual(resultado, expected)
   })
   it('deve remover um heroi usando o id', () => {
     const expected = true
