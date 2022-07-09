@@ -7,10 +7,15 @@ const database = require('./database')
 const DEFAULT_ITEM_CADASTRAR = {
   nome: 'Flash',
   poder: 'Speed',
-  id: 1
+  id: null
 }
 
 describe('Suite de manipulação de Herois', () => {
+  before(() => {
+    database.remover()
+    const id = database.cadastrar(DEFAULT_ITEM_CADASTRAR)
+    DEFAULT_ITEM_CADASTRAR.id = id
+  })
   it('deve pequisar um heroi, usando arquivos', () => {
     const expected = DEFAULT_ITEM_CADASTRAR
     const [resultado] = database.listar(expected.id)
@@ -29,5 +34,10 @@ describe('Suite de manipulação de Herois', () => {
     const [{ id: idAct, ...actual}] = database.listar(idGerado)
 
     deepEqual(actual, dadosCadastro)
+  })
+  it('deve remover um heroi usando o id', () => {
+    const expected = true
+    const response = database.remover(DEFAULT_ITEM_CADASTRAR.id)
+    deepEqual(response, expected)
   })
 })
