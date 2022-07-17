@@ -1,8 +1,10 @@
-const { readFileSync, writeFileSync } = require('fs')
+const { readFileSync, writeFileSync, existsSync } = require('fs')
 
 class Database {
   constructor() {
     this.NOME_ARQUIVO = 'herois.json'
+
+    if (!existsSync(this.NOME_ARQUIVO)) writeFileSync(this.NOME_ARQUIVO, '')
   }
 
   obterDadosArquivo() {
