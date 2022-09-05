@@ -1,5 +1,5 @@
 docker run \
-  --name postgres \
+  --name postgres_ew_multidb \
   -e POSTGRES_USER=multidb \
   -e POSTGRES_PASSWORD=pass \
   -e POSTGRES_DB=heroes \
